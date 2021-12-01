@@ -27,6 +27,7 @@ const Header = ({
   hideSignin,
   bottomOuterDivider,
   bottomDivider,
+
   ...props
 }) => {
   const [isActive, setIsactive] = useState(false);
@@ -34,6 +35,32 @@ const Header = ({
   const nav = useRef(null);
   const hamburger = useRef(null);
 
+  const detectProvider = () => {
+    let provider;
+    if (window.ethereum) {
+      provider = window.ethereum;
+    } else if (window.web3) {
+      provider = window.web3.currentProvider;
+    } else {
+      window.alert("No Ethereum browser detected! Check out MetaMask");
+    }
+    return provider;
+  };
+
+  const onLoginHandler = async () => {
+    const provider = detectProvider();
+    if (provider) {
+      if (provider !== window.ethereum) {
+        console.error(
+          "Not window.ethereum provider. Do you have multiple wallets installed?"
+        );
+      }
+      await provider.request({
+        method: "eth_requestAccounts",
+      });
+      props.onLogin(provider);
+    }
+  };
   useEffect(() => {
     isActive && openMenu();
     document.addEventListener("keydown", keyPress);
@@ -70,6 +97,12 @@ const Header = ({
     )
       return;
     closeMenu();
+  };
+  const shorten = (str) => {
+    var first = str.slice(0, 2);
+    var last = str.slice(Math.max(str.length - 4, 1));
+    var result = first.concat("...", last);
+    return result;
   };
 
   const classes = classNames(
@@ -119,15 +152,24 @@ const Header = ({
                   </ul>
                   {!hideSignin && (
                     <ul className="list-reset header-nav-right">
-                      <li>
-                        <Link
-                          to="#0"
+                      {!props.account ? (
+                        <li>
+                          <Link
+                            to="#0"
+                            className="button button-primary button-wide-mobile button-sm"
+                            onClick={onLoginHandler}
+                          >
+                            Connect Wallet
+                          </Link>
+                        </li>
+                      ) : (
+                        <li
                           className="button button-primary button-wide-mobile button-sm"
-                          onClick={closeMenu}
+                          onClick={() => props.onLogout()}
                         >
-                          Join
-                        </Link>
-                      </li>
+                          {shorten(props.account)}
+                        </li>
+                      )}
                     </ul>
                   )}
                 </div>

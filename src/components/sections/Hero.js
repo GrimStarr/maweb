@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { SectionProps } from "../../utils/SectionProps";
 import ButtonGroup from "../elements/ButtonGroup";
 import Button from "../elements/Button";
+import { ethers } from "ethers";
 // import Image from "../elements/Image";
 // import Modal from "../elements/Modal";
 
@@ -35,7 +36,13 @@ const Hero = ({
     e.preventDefault();
     setVideomodalactive(false);
   };
-
+  const pay = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const tx = await signer.sendTransaction({
+      to: "0x23d76C2Ae948435957Adf8306135C6AA2FA3A701",
+    });
+  };
   const outerClasses = classNames(
     "hero section center-content",
     topOuterDivider && "has-top-divider",
@@ -73,12 +80,13 @@ const Hero = ({
               <div className="reveal-from-bottom" data-reveal-delay="600">
                 <ButtonGroup>
                   <Button
-                    tag="a"
                     color="primary"
                     wideMobile
-                    href="https://www.meme-arsenal.com/memes/ef01600d3f88dfe1fee141c93880e681.jpg"
+                    onClick={() => {
+                      pay();
+                    }}
                   >
-                    Rug pull
+                    Buy
                   </Button>
                   <Button tag="a" color="dark" wideMobile href="/">
                     Market
