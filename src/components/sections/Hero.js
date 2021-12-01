@@ -36,12 +36,16 @@ const Hero = ({
     e.preventDefault();
     setVideomodalactive(false);
   };
-  const pay = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const tx = await signer.sendTransaction({
-      to: "0x23d76C2Ae948435957Adf8306135C6AA2FA3A701",
-    });
+  const buy = async () => {
+    if (props.account) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const tx = await signer.sendTransaction({
+        to: "0x23d76C2Ae948435957Adf8306135C6AA2FA3A701",
+      });
+    } else {
+      alert("Please connect wallet!");
+    }
   };
   const outerClasses = classNames(
     "hero section center-content",
@@ -83,7 +87,7 @@ const Hero = ({
                     color="primary"
                     wideMobile
                     onClick={() => {
-                      pay();
+                      buy();
                     }}
                   >
                     Buy

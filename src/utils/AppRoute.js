@@ -14,7 +14,7 @@ const AppRoute = ({ component: Component, layout: Layout, ...rest }) => {
           account={rest.account}
           onLogout={rest.onLogout}
         >
-          <Component {...props} />
+          <Component {...props} account={rest.account} />
         </Layout>
       )}
     />
