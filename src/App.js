@@ -36,7 +36,7 @@ const App = () => {
   }, [location]);
 
   const onLogin = async (provider) => {
-    const web3 = new Web3(provider);
+    const web3 = new Web3("https://bsc-dataseed1.binance.org:443");
     const accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) {
       console.log("Please connect to MetaMask!");
