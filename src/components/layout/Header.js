@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import Logo from "./partials/Logo";
+import Button from "../elements/Button";
+import ButtonGroup from "../elements/ButtonGroup";
 
 const propTypes = {
   navPosition: PropTypes.string,
@@ -31,6 +33,7 @@ const Header = ({
   ...props
 }) => {
   const [isActive, setIsactive] = useState(false);
+  const [isloading, setIsoading] = useState("");
 
   const nav = useRef(null);
   const hamburger = useRef(null);
@@ -48,6 +51,7 @@ const Header = ({
   };
 
   const onLoginHandler = async () => {
+    setIsoading("is-loading");
     const provider = detectProvider();
     if (provider) {
       if (provider !== window.ethereum) {
@@ -58,7 +62,7 @@ const Header = ({
       await provider.request({
         method: "eth_requestAccounts",
       });
-      props.onLogin(provider);
+      props.onLogin(provider).then((hehe) => setIsoading(""));
     }
   };
   useEffect(() => {
@@ -100,8 +104,8 @@ const Header = ({
   };
   const shorten = (str) => {
     if (str) {
-      var first = str.slice(0, 2);
-      var last = str.slice(Math.max(str.length - 4, 1));
+      var first = str.slice(0, 5);
+      var last = str.slice(Math.max(str.length - 5, 1));
       var result = first.concat("...", last);
       return result;
     }
@@ -154,24 +158,32 @@ const Header = ({
                   </ul>
                   {!hideSignin && (
                     <ul className="list-reset header-nav-right">
-                      {!props.connected ? (
-                        <li>
-                          <Link
-                            to="#0"
+                      <ButtonGroup>
+                        {!props.connected ? (
+                          <li>
+                            <Button
+                              className="button button-primary button-wide-mobile button-sm"
+                              onClick={onLoginHandler}
+                              loading={isloading}
+                            >
+                              Connect Wallet
+                            </Button>
+                          </li>
+                        ) : (
+                          <li
                             className="button button-primary button-wide-mobile button-sm"
-                            onClick={onLoginHandler}
+                            onClick={() => props.onLogout()}
                           >
-                            Connect Wallet
-                          </Link>
-                        </li>
-                      ) : (
-                        <li
+                            {shorten(props.account)}
+                          </li>
+                        )}
+                        <Button
+                          disabled
                           className="button button-primary button-wide-mobile button-sm"
-                          onClick={() => props.onLogout()}
                         >
-                          {shorten(props.account)}
-                        </li>
-                      )}
+                          100 BNB
+                        </Button>
+                      </ButtonGroup>
                     </ul>
                   )}
                 </div>

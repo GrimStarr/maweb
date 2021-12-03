@@ -119,6 +119,7 @@ const App = () => {
         // handle other "switch" errors
       }
     }
+    return "success";
   };
   const onLogout = () => {
     setConnected(false);

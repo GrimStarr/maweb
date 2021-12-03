@@ -30,7 +30,11 @@ const Hero = ({
 
   const openModal = (e) => {
     e.preventDefault();
-    setVideomodalactive(true);
+    if (props.connected) {
+      setVideomodalactive(true);
+    } else {
+      alert("Please connect wallet!");
+    }
   };
 
   const closeModal = (e) => {
