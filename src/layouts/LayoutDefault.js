@@ -10,7 +10,7 @@ const LayoutDefault = ({ children, ...props }) => (
       onLogin={props.onLogin}
       onLogout={props.onLogout}
       account={props.account}
-      isConnected={props.isConnected}
+      connected={props.connected}
     />
 
     <main className="site-content">{children}</main>

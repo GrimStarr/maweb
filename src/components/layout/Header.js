@@ -99,10 +99,12 @@ const Header = ({
     closeMenu();
   };
   const shorten = (str) => {
-    var first = str.slice(0, 2);
-    var last = str.slice(Math.max(str.length - 4, 1));
-    var result = first.concat("...", last);
-    return result;
+    if (str) {
+      var first = str.slice(0, 2);
+      var last = str.slice(Math.max(str.length - 4, 1));
+      var result = first.concat("...", last);
+      return result;
+    }
   };
 
   const classes = classNames(
@@ -152,7 +154,7 @@ const Header = ({
                   </ul>
                   {!hideSignin && (
                     <ul className="list-reset header-nav-right">
-                      {!props.account ? (
+                      {!props.connected ? (
                         <li>
                           <Link
                             to="#0"

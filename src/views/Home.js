@@ -10,7 +10,11 @@ import ProgressBar from "../components/sections/progressBar/ProgressBar";
 const Home = (props) => {
   return (
     <>
-      <Hero className="illustration-section-01" account={props.account} />
+      <Hero
+        className="illustration-section-01"
+        account={props.account}
+        connected={props.connected}
+      />
       <ProgressBar done="70" />
       <FeaturesTiles />
       <FeaturesSplit

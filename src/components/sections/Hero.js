@@ -37,7 +37,7 @@ const Hero = ({
     setVideomodalactive(false);
   };
   const buy = async () => {
-    if (props.account) {
+    if (props.connected) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const tx = await signer.sendTransaction({

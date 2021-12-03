@@ -20,10 +20,23 @@ const trackPage = (page) => {
 };
 
 const App = () => {
-  const [isConnected, setIsConnected] = useState(false);
+  const [connected, setConnected] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(null);
-  const [providerr, setProviderr] = useState(null);
-
+  const [provider, setProvider] = useState(window.ethereum);
+  const [web3, setWeb3] = useState(null);
+  const data = [
+    {
+      chainId: "0x38",
+      chainName: "Binance Smart Chain",
+      nativeCurrency: {
+        name: "Binance Coin",
+        symbol: "BNB",
+        decimals: 18,
+      },
+      rpcUrls: ["https://bsc-dataseed.binance.org/"],
+      blockExplorerUrls: ["https://bscscan.com"],
+    },
+  ];
   const childRef = useRef();
   let location = useLocation();
 
@@ -35,19 +48,80 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
+  useEffect(() => {
+    const handleAccountsChanged = async (accounts) => {
+      const Web3Accounts = await web3.eth.getAccounts();
+      if (accounts.length === 0) {
+        onLogout();
+      } else if (accounts[0] !== currentAccount) {
+        setCurrentAccount(accounts[0]);
+      }
+    };
+    const handleChainChanged = async (chainId) => {
+      const web3ChainId = await web3.eth.getChainId();
+      if (web3ChainId !== 56) onLogout();
+    };
+
+    if (currentAccount) {
+      provider.on("accountsChanged", handleAccountsChanged);
+      provider.on("chainChanged", handleChainChanged);
+    }
+    return () => {
+      if (currentAccount) {
+        provider.removeListener("accountsChanged", handleAccountsChanged);
+        provider.removeListener("chainChanged", handleChainChanged);
+      }
+    };
+  }, [currentAccount]);
+
   const onLogin = async (provider) => {
-    const web3 = new Web3("https://bsc-dataseed1.binance.org:443");
+    const web3 = new Web3(provider);
     const accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) {
       console.log("Please connect to MetaMask!");
     } else if (accounts[0] !== currentAccount) {
+      setWeb3(web3);
+      setProvider(provider);
+
       setCurrentAccount(accounts[0]);
-      setIsConnected(true);
+
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x38" }],
+        });
+        setConnected(true);
+      } catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        if (switchError.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: "0x38",
+                  chainName: "Binance Smart Chain",
+                  nativeCurrency: {
+                    name: "Binance Coin",
+                    symbol: "BNB",
+                    decimals: 18,
+                  },
+                  rpcUrls: ["https://bsc-dataseed.binance.org/"],
+                  blockExplorerUrls: ["https://bscscan.com"],
+                },
+              ],
+            });
+            setConnected(true);
+          } catch (addError) {
+            // handle "add" error
+          }
+        }
+        // handle other "switch" errors
+      }
     }
-    console.log("ss", providerr);
   };
   const onLogout = () => {
-    console.log("dsfdf");
+    setConnected(false);
     setCurrentAccount(null);
   };
 
@@ -63,7 +137,7 @@ const App = () => {
             layout={LayoutDefault}
             onLogin={onLogin}
             onLogout={onLogout}
-            isConnected={isConnected}
+            connected={connected}
             account={currentAccount}
           />
         </Switch>
