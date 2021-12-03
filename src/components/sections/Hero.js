@@ -4,8 +4,9 @@ import { SectionProps } from "../../utils/SectionProps";
 import ButtonGroup from "../elements/ButtonGroup";
 import Button from "../elements/Button";
 import { ethers } from "ethers";
-// import Image from "../elements/Image";
-// import Modal from "../elements/Modal";
+import Image from "../elements/Image";
+import Modal from "../elements/Modal";
+import Purchase from "./purchase/Purchase";
 
 const propTypes = {
   ...SectionProps.types,
@@ -71,7 +72,7 @@ const Hero = ({
               className="mt-0 mb-16 reveal-from-bottom"
               data-reveal-delay="200"
             >
-              Omicron <span className="text-color-primary">Coin</span>
+              Omicron <span className="text-color-primary">Token</span>
             </h1>
             <div className="container-xs">
               <p
@@ -86,9 +87,10 @@ const Hero = ({
                   <Button
                     color="primary"
                     wideMobile
-                    onClick={() => {
-                      buy();
-                    }}
+                    // onClick={() => {
+                    //   buy();
+                    // }}
+                    onClick={openModal}
                   >
                     Buy
                   </Button>
@@ -108,7 +110,7 @@ const Hero = ({
               data-video="https://player.vimeo.com/video/174002812"
               href="#0"
               aria-controls="video-modal"
-              onClick={openModal}
+              
             >
               <Image
                 className="has-shadow"
@@ -119,13 +121,13 @@ const Hero = ({
               />
             </a>
           </div> */}
-          {/* <Modal
+          <Modal
             id="video-modal"
             show={videoModalActive}
             handleClose={closeModal}
-            video="https://player.vimeo.com/video/174002812"
-            videoTag="iframe"
-          /> */}
+          >
+            <Purchase />
+          </Modal>
         </div>
       </div>
     </section>
