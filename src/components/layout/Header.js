@@ -177,10 +177,7 @@ const Header = ({
                             {shorten(props.account)}
                           </li>
                         )}
-                        <Button
-                          disabled
-                          className="button button-primary button-wide-mobile button-sm"
-                        >
+                        <Button className="button button-primary button-wide-mobile button-sm">
                           100 BNB
                         </Button>
                       </ButtonGroup>

@@ -4,7 +4,6 @@ import { ethers } from "ethers";
 import ErrorMessage from "./ErrorMessage";
 import TxList from "./TxList";
 
-import "./style.scss";
 import Input from "../../elements/Input";
 import Button from "../../elements/Button";
 const startPayment = async ({ setError, setTxs, ether, addr }) => {
