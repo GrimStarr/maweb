@@ -158,29 +158,31 @@ const Header = ({
                   </ul>
                   {!hideSignin && (
                     <ul className="list-reset header-nav-right">
-                      <ButtonGroup>
-                        {!props.connected ? (
-                          <li>
+                      {!props.connected ? (
+                        <li>
+                          <Button
+                            className="button button-primary button-wide-mobile button-sm"
+                            onClick={onLoginHandler}
+                            loading={isloading}
+                          >
+                            Connect Wallet
+                          </Button>
+                        </li>
+                      ) : (
+                        <li>
+                          <ButtonGroup>
                             <Button
                               className="button button-primary button-wide-mobile button-sm"
-                              onClick={onLoginHandler}
-                              loading={isloading}
+                              onClick={() => props.onLogout()}
                             >
-                              Connect Wallet
+                              {shorten(props.account)}
                             </Button>
-                          </li>
-                        ) : (
-                          <li
-                            className="button button-primary button-wide-mobile button-sm"
-                            onClick={() => props.onLogout()}
-                          >
-                            {shorten(props.account)}
-                          </li>
-                        )}
-                        <Button className="button button-primary button-wide-mobile button-sm">
-                          100 BNB
-                        </Button>
-                      </ButtonGroup>
+                            <Button className="button button-primary button-wide-mobile button-sm">
+                              97.053 BNB
+                            </Button>
+                          </ButtonGroup>
+                        </li>
+                      )}
                     </ul>
                   )}
                 </div>
