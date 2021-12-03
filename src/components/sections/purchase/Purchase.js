@@ -58,7 +58,6 @@ const Purchase = () => {
                 hasIcon="right"
                 placeholder="Your best email"
                 defaultValue="0x23d76C2Ae948435957Adf8306135C6AA2FA3A701"
-                disabled
               />
             </div>
             <div className="my-3">
