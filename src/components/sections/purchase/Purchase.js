@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import ErrorMessage from "./ErrorMessage";
 import TxList from "./TxList";
@@ -27,21 +27,37 @@ const startPayment = async ({ setError, setTxs, ether, addr }) => {
   }
 };
 
-const Purchase = () => {
+const Purchase = (props) => {
   const [error, setError] = useState();
   const [txs, setTxs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [sumbitted, setSumbitted] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+  }, [sumbitted]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
-    setError();
+    try {
+      console.log("!");
+      setLoading(true, () => {
+        console.log(loading);
+      });
+      console.log("fucker", loading);
+      const data = new FormData(e.target);
+      setError();
 
-    await startPayment({
-      setError,
-      setTxs,
-      ether: data.get("bnb"),
-      addr: "0x23d76C2Ae948435957Adf8306135C6AA2FA3A701",
-    });
+      await startPayment({
+        setError,
+        setTxs,
+        ether: data.get("bnb"),
+        addr: "0x23d76C2Ae948435957Adf8306135C6AA2FA3A701",
+      }).then(setLoading(false));
+    } catch (err) {
+      setLoading(true);
+      console.log(loading);
+    }
   };
   return (
     <form className="m-4" onSubmit={handleSubmit}>
@@ -74,8 +90,8 @@ const Purchase = () => {
           </div>
         </main>
         <footer className="p-4">
-          <Button color="primary" wide type="submit">
-            Purchase
+          <Button loading={loading} color="primary" size="10rem" type="submit">
+            Buy
           </Button>
           {/* <ErrorMessage message={error} />
           <TxList txs={txs} /> */}

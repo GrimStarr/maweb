@@ -24,6 +24,7 @@ const propTypes = {
   name: PropTypes.string,
   status: PropTypes.string,
   disabled: PropTypes.bool,
+  required: PropTypes.bool,
   value: PropTypes.string,
   formGroup: PropTypes.string,
   hasIcon: PropTypes.string,
@@ -44,6 +45,7 @@ const defaultProps = {
   value: undefined,
   formGroup: null,
   hasIcon: null,
+  required: false,
   size: "",
   placeholder: "",
   rows: 3,
@@ -66,6 +68,7 @@ const Input = ({
   placeholder,
   rows,
   hint,
+  required,
   defaultValue,
   ...props
 }) => {
@@ -101,6 +104,7 @@ const Input = ({
           defaultValue={defaultValue}
           value={value}
           placeholder={placeholder}
+          required={required}
           rows={type === "textarea" ? rows : null}
         />
         {children}

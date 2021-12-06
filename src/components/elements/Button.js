@@ -6,7 +6,7 @@ const propTypes = {
   tag: PropTypes.elementType,
   color: PropTypes.string,
   size: PropTypes.string,
-  loading: PropTypes.string,
+  loading: PropTypes.bool,
   wide: PropTypes.bool,
   wideMobile: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -37,7 +37,7 @@ const Button = ({
     "button",
     color && `button-${color}`,
     size && `button-${size}`,
-    loading && `${loading}`,
+    loading ? "is-loading" : "",
     wide && "button-block",
     wideMobile && "button-wide-mobile",
     className

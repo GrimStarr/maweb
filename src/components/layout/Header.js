@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import Logo from "./partials/Logo";
 import Button from "../elements/Button";
 import ButtonGroup from "../elements/ButtonGroup";
+import telegram from "../../assets/images/telegram.png";
+import logo from "../../assets/images/image_1.png";
 
 const propTypes = {
   navPosition: PropTypes.string,
@@ -33,7 +35,7 @@ const Header = ({
   ...props
 }) => {
   const [isActive, setIsactive] = useState(false);
-  const [isloading, setIsoading] = useState("");
+  const [isloading, setIsoading] = useState(false);
 
   const nav = useRef(null);
   const hamburger = useRef(null);
@@ -51,7 +53,7 @@ const Header = ({
   };
 
   const onLoginHandler = async () => {
-    setIsoading("is-loading");
+    setIsoading(true);
     const provider = detectProvider();
     if (provider) {
       if (provider !== window.ethereum) {
@@ -62,7 +64,7 @@ const Header = ({
       await provider.request({
         method: "eth_requestAccounts",
       });
-      props.onLogin(provider).then((hehe) => setIsoading(""));
+      props.onLogin(provider).then((hehe) => setIsoading(false));
     }
   };
   useEffect(() => {
@@ -126,7 +128,7 @@ const Header = ({
             bottomDivider && "has-bottom-divider"
           )}
         >
-          <Logo />
+          <Logo size="60" image={logo} />
           {!hideNav && (
             <>
               <button
@@ -146,14 +148,18 @@ const Header = ({
                 <div className="header-nav-inner">
                   <ul
                     className={classNames(
-                      "list-reset text-xs",
+                      "list-reset text-xs ",
                       navPosition && `header-nav-${navPosition}`
                     )}
                   >
                     <li>
-                      <Link to="#0" onClick={closeMenu}>
-                        Whitepaper
-                      </Link>
+                      <Logo image={telegram} />
+                    </li>
+                    <li>
+                      <Link to="#0">Whitepaper</Link>
+                    </li>
+                    <li>
+                      <Link to="#0">Tokenomics</Link>
                     </li>
                   </ul>
                   {!hideSignin && (
@@ -170,17 +176,12 @@ const Header = ({
                         </li>
                       ) : (
                         <li>
-                          <ButtonGroup>
-                            <Button
-                              className="button button-primary button-wide-mobile button-sm"
-                              onClick={() => props.onLogout()}
-                            >
-                              {shorten(props.account)}
-                            </Button>
-                            <Button className="button button-primary button-wide-mobile button-sm">
-                              97.053 BNB
-                            </Button>
-                          </ButtonGroup>
+                          <Button
+                            className="button button-primary button-wide-mobile button-sm"
+                            onClick={() => props.onLogout()}
+                          >
+                            {shorten(props.account)}
+                          </Button>
                         </li>
                       )}
                     </ul>

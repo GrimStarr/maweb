@@ -87,8 +87,9 @@ const Hero = ({
                 to set it up once, and get beautiful results forever.
               </p>
               <div className="reveal-from-bottom" data-reveal-delay="600">
+                <Purchase connected={props.connected} />
                 <ButtonGroup>
-                  <Button
+                  {/* <Button
                     color="primary"
                     wideMobile
                     // onClick={() => {
@@ -97,10 +98,10 @@ const Hero = ({
                     onClick={openModal}
                   >
                     Buy
-                  </Button>
-                  <Button tag="a" color="dark" wideMobile href="/">
+                  </Button> */}
+                  {/* <Button tag="a" color="dark" wideMobile href="/">
                     Market
-                  </Button>
+                  </Button> */}
                 </ButtonGroup>
               </div>
             </div>
@@ -129,9 +130,7 @@ const Hero = ({
             id="video-modal"
             show={videoModalActive}
             handleClose={closeModal}
-          >
-            <Purchase />
-          </Modal>
+          ></Modal>
         </div>
       </div>
     </section>

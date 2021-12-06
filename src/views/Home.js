@@ -17,13 +17,13 @@ const Home = (props) => {
       />
       <ProgressBar done="70" />
       <FeaturesTiles />
-      <FeaturesSplit
+      {/* <FeaturesSplit
         invertMobile
         topDivider
         imageFill
         className="illustration-section-02"
-      />
-      <Testimonial topDivider />
+      /> */}
+      {/* <Testimonial topDivider /> */}
       <Cta split />
     </>
   );
